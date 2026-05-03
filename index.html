@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEXIS // PROTOCOL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- ==================== TELA 1: INTRO ==================== -->
+        <div id="tela-intro" class="tela ativo">
+            <h1 class="titulo">LEXIS // PROTOCOL</h1>
+            <div class="sub-titulo">VERSÃO WEB 1.0 // UPLINK ESTABELECIDO</div>
+            
+            <div class="intro-box">
+                <span style="color:#4DD0E1;">> INICIANDO SEQUÊNCIA DE BOOT... [OK]</span><br>
+                <span style="color:#4DD0E1;">> LENDO ARQUIVO LOCAL 'palavras.json'... [OK]</span><br>
+                <span style="color:#4DD0E1;">> BYPASS DE FIREWALL EXTRATERRESTRE... [OK]</span><br><br>
+                <b>OPERADOR, ACORDE:</b><br>
+                A linguagem é a maior arma da humanidade. Sem palavras, não há ideias. Sem ideias, não há rebelião.<br><br>
+                No ano 2077, descobrimos a terrível verdade: o Mega Conglomerado <b>OmniCorp</b> é uma fachada administrada por uma elite de CEOs alienígenas. O objetivo deles? Patentear, burocratizar e apagar o nosso vocabulário, limitando nossa comunicação para transformar a humanidade em uma força de trabalho dócil e muda.<br><br>
+                Nós, da <i>Resistência LEXIS</i>, hackeamos uma falha na rede deles. Oferecemos a você o acesso backdoor: a chance de invadir o Mainframe, injetar as palavras proibidas e libertar o Vocabulário Global. Você é a nossa última esperança.<br><br>
+                <b style="color:#E0F7FA;">[ DIRETRIZES DA MISSÃO ]</b><br>
+                <b style="color:#4DD0E1;">1.</b> O sistema exibirá um <b>NÓ CRIPTOGRAFADO</b>.<br>
+                <b style="color:#4DD0E1;">2.</b> Injete <b>SINÔNIMOS</b> válidos para liberar a palavra e farmar XP.<br>
+                <b style="color:#4DD0E1;">3.</b> <i>Farm de XP:</i> O nó ficará aberto por todo o tempo. Digite o máximo que conseguir!<br>
+                <b style="color:#FF5252;">4.</b> Errou? Tente de novo! As dicas foram desativadas para não alertar os rastreadores da OmniCorp.<br>
+                <b style="color:#FF5252;">5.</b> Sobreviva até o <b>NÍVEL 10</b> para enfrentar a segurança máxima do Núcleo.<br>
+            </div>
+            
+            <div class="creditos-box">// ARQUITETO DE SISTEMA ROOT: GUSTAVOX99 //</div>
+            
+            <!-- >>> INJETAR ESTE BLOCO AQUI <<< -->
+            <div class="recorde-box" id="intro-recorde">
+                RECORDE PESSOAL: 0 XP <span style="color:#555;">|</span> NÍVEL MÁX: 01
+            </div>
+            <!-- ============================== -->
+            <!-- NOVO BOTÃO DA LOJA -->
+            <button class="btn-cyber" id="btn-loja" style="border-color: #FFD700; color: #FFD700;">> MERCADO NEGRO [LOJA]</button>
+
+            <button class="btn-cyber" id="btn-iniciar">> INICIAR HACKEAMENTO [ENTER]</button>
+        </div>
+
+        <!-- ==================== TELA 2: JOGANDO ==================== -->
+        <div id="tela-jogo" class="tela oculto">
+            <div class="hud">
+                <div class="hud-nivel" id="display-nivel">NÍVEL DE ACESSO: 01</div>
+                <div class="hud-status">
+                    <div class="timer" id="display-timer">TIMER: 15.0s</div>
+                    <div class="xp" id="display-xp">XP: 0</div>
+                </div>
+            </div>
+
+            <div class="terminal-box" id="box-palavra">
+                <div class="dica-terminal">> DESCRIPTOGRAFANDO NÓ...</div>
+                <div class="palavra-alvo" id="palavra-atual">INICIANDO...</div>
+            </div>
+
+            <div class="feedback" id="display-feedback"></div>
+
+            <div class="input-container">
+                <label for="input-comando">Comando:</label>
+                <input type="text" id="input-comando" placeholder="Injete os sinônimos e farme XP..." autocomplete="off">
+                <div class="instrucao-enter">> PRESSIONE [ENTER] PARA INJETAR A CHAVE</div>
+            </div>
+        </div>
+
+        <!-- ==================== TELA 3: RESULTADOS (15s) ==================== -->
+        <div id="tela-resultados" class="tela oculto">
+            <h1 class="titulo" style="font-size:3rem;">NÓ HACKEADO</h1>
+            
+            <div class="cooldown-ritual">
+                <span style="color:#4DD0E1; font-size:1.2rem;">> CHAVE DE ORIGEM: <b style="font-size:1.5rem; color:#E0F7FA;" id="res-chave">PALAVRA</b></span><br><br>
+                <span style="color:#B2EBF2; font-size:0.9rem;">> VARIÁVEIS ACEITAS PELO SISTEMA (APRENDA ESTAS CHAVES):</span><br>
+                <div style="color:#4DD0E1; font-size:1.5rem; margin-top: 10px;" id="res-sinonimos">s1, s2, s3</div>
+                <div class="frase-lore" id="res-lore">"Lore phrase aqui..."</div>
+            </div>
+            
+            <div style="text-align:center; color:#555; margin-top:20px;" id="res-timer">> SALTANDO PARA PRÓXIMO NÓ EM 15.0s...</div>
+        </div>
+
+        <!-- ==================== TELA 4: GAME OVER ==================== -->
+        <div id="tela-gameover" class="tela oculto">
+            <h1 class="titulo" style="font-size:4.5rem; color:#FF5252; text-shadow: 0 0 20px #FF5252;">CONEXÃO PERDIDA</h1>
+            
+            <div class="terminal-box" style="text-align:center; border: 2px solid #FF5252; background-color: rgba(26,10,15,0.9);">
+                <i style="font-size:1.2rem; color:#FF5252;">> O TEMPO ESGOTOU E A OMNICORP TE ENCONTROU.</i><br><br>
+                
+                <div style="background: rgba(0,0,0,0.5); padding: 15px; border: 1px dashed #FF5252; margin: 15px 0; border-radius: 4px;">
+                    <span style="color:#FF5252; font-size:1rem;">> CHAVE PERDIDA: <b style="font-size:1.3rem;" id="go-chave">PALAVRA</b></span><br>
+                    <span style="color:#4DD0E1; font-size:1rem;">> SINÔNIMOS CORRETOS PARA ESTUDO:</span><br>
+                    <span style="color:#E0F7FA; font-size:1.2rem;" id="go-sinonimos">s1, s2, s3</span>
+                </div>
+                
+                <b style="font-size:1.8rem; color:#4DD0E1;" id="go-xp">DADOS RECUPERADOS: 0 XP</b><br>
+                <span style="font-size:1rem; color:#888;" id="go-nivel">NÍVEL MÁXIMO ALCANÇADO: 1</span>
+            </div>
+            
+            <button class="btn-cyber" onclick="location.reload()">> TENTAR NOVAMENTE [ENTER]</button>
+        </div>
+
+        <!-- ==================== TELA 5: MERCADO NEGRO (LOJA) ==================== -->
+        <div id="tela-loja" class="tela oculto">
+            <h1 class="titulo" style="color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);">MERCADO NEGRO</h1>
+            <div class="sub-titulo">SKINS ILEGAIS E OVERRIDES DE TERMINAL</div>
+            
+            <div class="recorde-box" id="loja-saldo" style="font-size: 1.5rem; color: #FFD700;">
+                SALDO ATUAL: 0 XP
+            </div>
+
+            <div class="loja-grid" id="loja-itens">
+                <!-- Os itens serão injetados aqui pelo JavaScript -->
+            </div>
+            
+            <button class="btn-cyber" id="btn-voltar-loja">> VOLTAR AO MENU INICIAL</button>
+        </div>
+
+    </div>
+        
+        <!-- ==================== MOTOR DE ÁUDIO ==================== -->
+    <audio id="som-sucesso" src="audio/sucesso.mp3" preload="auto"></audio>
+    <audio id="som-erro" src="audio/erro.mp3" preload="auto"></audio>
+    <audio id="som-gameover" src="audio/gameover.mp3" preload="auto"></audio>
+    
+    <script src="script.js"></script>
+</body>
+</html>

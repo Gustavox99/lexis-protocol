@@ -1,0 +1,368 @@
+/* Zerando as margens padrão do navegador */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Fundo da tela e Grid Cyberpunk */
+body {
+    background-color: #0A0E17;
+    background-image: 
+        linear-gradient(rgba(77, 208, 225, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77, 208, 225, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: #E0F7FA;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* Limitador de largura para não esticar muito em telas grandes */
+.container {
+    width: 100%;
+    max-width: 750px;
+}
+
+/* Tipografia e Títulos */
+.titulo {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: #4DD0E1;
+    text-shadow: 0 0 10px rgba(77,208,225,0.4);
+    letter-spacing: 2px;
+}
+
+.sub-titulo {
+    text-align: center;
+    font-size: 1rem;
+    color: #FF5252;
+    letter-spacing: 5px;
+    margin-top: 5px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* Status do Jogo (HUD) */
+.hud { margin-bottom: 20px; }
+
+.hud-nivel {
+    text-align: center;
+    color: #4DD0E1;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    border-bottom: 1px solid rgba(77,208,225,0.5);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.hud-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timer {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #4DD0E1;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.xp { font-size: 1.2rem; color: #4DD0E1; }
+
+/* Caixa do Terminal (Palavra) */
+.terminal-box {
+    border: 1px solid rgba(77,208,225,0.4);
+    padding: 30px;
+    background-color: rgba(10, 14, 23, 0.9);
+    box-shadow: 0 0 15px rgba(77,208,225,0.05), inset 0 0 15px rgba(77,208,225,0.02);
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.dica-terminal {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    color: #4DD0E1;
+}
+
+.palavra-alvo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    color: #FFFFFF;
+    text-align: center;
+    font-weight: 700;
+    margin: 15px 0;
+    text-shadow: 0 0 8px rgba(77,208,225,0.8);
+    text-transform: uppercase;
+}
+
+/* Caixa de Digitação */
+.input-container {
+    background-color: rgba(10, 14, 23, 0.9);
+    border: 1px solid rgba(77,208,225,0.4);
+    padding: 20px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label { font-size: 0.9rem; color: #E0F7FA; font-weight: bold; }
+
+input[type="text"] {
+    background-color: #070A10;
+    border: 1px solid rgba(77,208,225,0.5);
+    color: #4DD0E1;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: inset 0 0 8px rgba(77,208,225,0.1);
+    outline: none;
+    transition: 0.2s;
+}
+
+input[type="text"]:focus {
+    border-color: #E0F7FA;
+    color: #E0F7FA;
+    box-shadow: 0 0 10px rgba(77,208,225,0.3);
+}
+
+.instrucao-enter { text-align: right; color: #4DD0E1; font-size: 0.8rem; opacity: 0.7; }
+
+/* Textos de Acerto/Erro */
+.feedback {
+    text-align: center;
+    min-height: 24px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* ==================== NOVAS REGRAS WEB ==================== */
+
+/* Controle de Visibilidade das Telas */
+.tela { display: none; }
+.tela.ativo { display: block; animation: fadeIn 0.5s ease-in; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botões Cyberpunk */
+.btn-cyber {
+    width: 100%;
+    background: #0A0E17;
+    color: #4DD0E1;
+    border: 1px solid #4DD0E1;
+    font-family: 'Orbitron', sans-serif;
+    padding: 15px;
+    transition: 0.2s;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-cyber:hover {
+    background: #4DD0E1;
+    color: #0A0E17;
+    box-shadow: 0 0 15px rgba(77,208,225,0.6);
+}
+
+.creditos-box {
+    text-align: right; font-size: 0.7rem; color: #4DD0E1; opacity: 0.6; margin-bottom: 20px; letter-spacing: 1px;
+}
+
+.cooldown-ritual {
+    border: 1px solid #4DD0E1; background: rgba(10, 14, 23, 0.95);
+    padding: 30px; text-align: center; margin-top: 20px; border-radius: 4px;
+}
+
+.frase-lore {
+    color: #FF5252; font-size: 0.9rem; font-style: italic; margin-top: 15px;
+    border-top: 1px dashed rgba(77,208,225,0.3); padding-top: 15px;
+}
+
+/* Caixa de Recorde Pessoal (Local Storage) */
+.recorde-box {
+    text-align: center;
+    background: rgba(77, 208, 225, 0.1);
+    border: 1px dashed #4DD0E1;
+    color: #E0F7FA;
+    font-family: 'Orbitron', sans-serif;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(77, 208, 225, 0.5);
+}
+
+/* ==================== GAME FEEL (JUICE) v2.0 ==================== */
+
+/* --- 1. NEGATIVO: Tremor e Pânico --- */
+
+/* Tremor de Erro (Shake) - Mais rápido e agressivo */
+.shake {
+    animation: shake-animation 0.3s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake-animation {
+    10%, 90% { transform: translate3d(-3px, 0, 0); }
+    20%, 80% { transform: translate3d(5px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-10px, 0, 0); }
+    40%, 60% { transform: translate3d(10px, 0, 0); }
+}
+
+/* Pulso de Pânico (Últimos 5 Segundos) */
+.alerta-tempo {
+    animation: pulso-vermelho 1s infinite !important;
+}
+
+@keyframes pulso-vermelho {
+    0%, 100% { box-shadow: 0 0 15px rgba(77,208,225,0.05), inset 0 0 15px rgba(77,208,225,0.02); border-color: rgba(77,208,225,0.4); }
+    50% { box-shadow: 0 0 30px rgba(255,82,82,0.6), inset 0 0 20px rgba(255,82,82,0.3); border-color: #FF5252; }
+}
+
+/* Pulso de Colapso (Últimos 3 Segundos - Mais rápido) */
+.alerta-tempo-urgente {
+    animation: pulso-vermelho 0.4s infinite !important;
+}
+
+
+/* --- 2. POSITIVO: XP e Glimmers --- */
+
+/* Texto Flutuante (+XP) */
+.juice-floating-text {
+    position: absolute;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #4DD0E1;
+    text-shadow: 0 0 10px rgba(77, 208, 225, 0.8);
+    pointer-events: none; /* Não clica nele */
+    animation: juice-float-up-fade 1.2s ease-out both;
+}
+
+/* Variação Turbo (Ouro) */
+.juice-floating-text.turbo {
+    color: #FFD700;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    font-size: 1.8rem;
+}
+
+@keyframes juice-float-up-fade {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(-70px); opacity: 0; }
+}
+
+/* Glimmer / Flash de Sucesso na Caixa de Texto */
+.juice-flash-correct {
+    animation: juice-flash-pulse 0.4s ease-out;
+}
+
+.juice-flash-turbo {
+    animation: juice-flash-pulse-turbo 0.4s ease-out;
+}
+
+@keyframes juice-flash-pulse {
+    0%, 100% { box-shadow: inset 0 0 8px rgba(77,208,225,0.1); border-color: rgba(77,208,225,0.5); }
+    20% { box-shadow: 0 0 30px rgba(77,208,225,1), inset 0 0 20px rgba(77,208,225,0.3); border-color: #E0F7FA; }
+}
+
+@keyframes juice-flash-pulse-turbo {
+    0%, 100% { box-shadow: inset 0 0 8px rgba(77,208,225,0.1); border-color: rgba(77,208,225,0.5); }
+    20% { box-shadow: 0 0 30px rgba(255,215,0,1), inset 0 0 20px rgba(255,215,0,0.3); border-color: #FFD700; }
+}
+
+/* ==================== MERCADO NEGRO & SKINS ==================== */
+
+.loja-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.loja-item {
+    background: rgba(10, 14, 23, 0.9);
+    border: 1px solid #555;
+    padding: 20px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loja-item h3 { font-family: 'Orbitron', sans-serif; color: #FFF; margin-bottom: 5px;}
+.loja-item p { color: #888; font-size: 0.9rem; }
+.loja-item button { width: 150px; margin-top: 0; }
+
+/* TEMA: MATRIX VERDE */
+body.tema-matrix .titulo, body.tema-matrix .hud-nivel, body.tema-matrix .timer, body.tema-matrix .xp, body.tema-matrix label, body.tema-matrix .instrucao-enter { color: #00FF41 !important; text-shadow: 0 0 8px rgba(0,255,65,0.5); border-color: rgba(0,255,65,0.4); }
+body.tema-matrix .terminal-box, body.tema-matrix input[type="text"], body.tema-matrix .btn-cyber { border-color: #00FF41; color: #00FF41; }
+body.tema-matrix input[type="text"]:focus { box-shadow: 0 0 15px rgba(0,255,65,0.3); border-color: #00FF41 !important; color: #00FF41 !important;}
+body.tema-matrix .btn-cyber:hover { background: #00FF41; color: #0A0E17; }
+
+/* TEMA: SANGUE DE IA (Vampire Red) */
+body.tema-sangue .titulo, body.tema-sangue .hud-nivel, body.tema-sangue .timer, body.tema-sangue .xp, body.tema-sangue label, body.tema-sangue .instrucao-enter { color: #FF003C !important; text-shadow: 0 0 8px rgba(255,0,60,0.5); border-color: rgba(255,0,60,0.4); }
+body.tema-sangue .terminal-box, body.tema-sangue input[type="text"], body.tema-sangue .btn-cyber { border-color: #FF003C; color: #FF003C; }
+body.tema-sangue input[type="text"]:focus { box-shadow: 0 0 15px rgba(255,0,60,0.3); border-color: #FF003C !important; color: #FF003C !important;}
+body.tema-sangue .btn-cyber:hover { background: #FF003C; color: #0A0E17; }
+
+/* ==================== PROTOCOLO MOBILE (RESPONSIVIDADE) ==================== */
+/* Estas regras só são ativadas se a tela for menor que 600px (Celulares) */
+@media (max-width: 600px) {
+    body {
+        padding: 20px 10px; /* Reduz as bordas laterais para ganhar espaço */
+    }
+
+    .titulo { 
+        font-size: 2.2rem; /* Diminui o título principal */
+    }
+
+    .palavra-alvo { 
+        font-size: 2rem; /* Impede que palavras longas quebrem a caixa */
+        margin: 10px 0;
+    }
+
+    .terminal-box { 
+        padding: 15px; /* Reduz o preenchimento interno das caixas */
+    }
+
+    input[type="text"] { 
+        font-size: 1.2rem; 
+        padding: 10px; 
+    }
+
+    .hud-status { 
+        flex-direction: column; /* Coloca o Timer em cima e o XP embaixo */
+        gap: 5px; 
+    }
+
+    .timer { 
+        font-size: 1.5rem; 
+    }
+
+    .btn-cyber { 
+        font-size: 0.9rem; 
+        padding: 12px; 
+    }
+
+    .titulo[style*="4.5rem"] {
+        font-size: 3rem !important; /* Ajusta o tamanho do GAME OVER */
+    }
+}
