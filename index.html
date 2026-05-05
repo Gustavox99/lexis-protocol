@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<!-- BOTÃO DE MÚSICA -->
+    <button id="btn-mute" class="btn-mute">🔊 BGM: ON</button>
 
     <div class="container">
         <!-- ==================== TELA 1: INTRO ==================== -->
@@ -121,6 +123,8 @@
     </div>
         
         <!-- ==================== MOTOR DE ÁUDIO ==================== -->
+    <audio id="bgm-player" loop preload="auto"></audio> <!-- NOVO TOCA-FITAS -->
+    
     <audio id="som-sucesso" src="audio/sucesso.mp3" preload="auto"></audio>
     <audio id="som-erro" src="audio/erro.mp3" preload="auto"></audio>
     <audio id="som-gameover" src="audio/gameover.mp3" preload="auto"></audio>

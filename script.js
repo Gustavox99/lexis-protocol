@@ -15,7 +15,8 @@ const LORE_FRASES = [
 let bancoDados = {};
 let nivel = 1;
 let score = 0;
-let tempoBase = 15.0;
+// Substitua a linha antiga do tempoBase por esta:
+tempoBase = isBoss ? 30.0 : Math.max(15.0, 26.0 - nivel);
 let tempoRestante = 15.0;
 let timerInterval;
 let timerCooldownInterval;
@@ -48,6 +49,14 @@ const displayFeedback = document.getElementById("display-feedback");
 const somSucesso = document.getElementById("som-sucesso");
 const somErro = document.getElementById("som-erro");
 const somGameOver = document.getElementById("som-gameover");
+
+// Conectando os Sons e UI de Áudio
+const bgmPlayer = document.getElementById("bgm-player");
+const btnMute = document.getElementById("btn-mute");
+
+// >>> ATENÇÃO: Coloque aqui o nome exato dos seus 3 arquivos MP3 <<<
+const trilhas = ["Clockwork_Breach.mp3", "Second_Before_Impact.mp3", "Protocol_Breach.mp3"]; 
+let isMuted = false;
 
 // Função para atualizar a UI da Intro com o recorde salvo
 function atualizarRecordeUI() {
@@ -106,6 +115,7 @@ async function carregarBancoDeDados() {
 
 // 5. Botão de Iniciar (Na Intro)
 document.getElementById("btn-iniciar").addEventListener("click", () => {
+    iniciarBGM(); // Dá o play na música!
     trocarTela(telaJogo);
     nivel = 1;
     score = 0;
@@ -450,6 +460,28 @@ function abrirLoja() {
 
 // Aplica o tema salvo logo que o jogo abre
 aplicarTema(temaAtual);
+
+// ==================== RÁDIO DA RESISTÊNCIA ====================
+
+// Lógica de Mutar/Desmutar
+btnMute.addEventListener("click", () => {
+    isMuted = !isMuted;
+    bgmPlayer.muted = isMuted;
+    btnMute.innerText = isMuted ? "🔇 BGM: OFF" : "🔊 BGM: ON";
+    btnMute.classList.toggle("mutado", isMuted);
+});
+
+// Função para iniciar a música (chamada apenas quando o jogador interage)
+function iniciarBGM() {
+    // Só toca se ainda não estiver tocando nenhuma música
+    if (!bgmPlayer.getAttribute("src")) {
+        const trilhaSorteada = trilhas[Math.floor(Math.random() * trilhas.length)];
+        bgmPlayer.src = trilhaSorteada;
+        bgmPlayer.volume = 0.3; // Volume da música um pouco mais baixo que os efeitos
+        bgmPlayer.play().catch(e => console.warn("Autoplay da BGM bloqueado pelo navegador.", e));
+    }
+}
+
 // ==========================================
 // BOOT DO SISTEMA
 // ==========================================

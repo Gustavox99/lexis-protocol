@@ -323,6 +323,32 @@ body.tema-sangue .terminal-box, body.tema-sangue input[type="text"], body.tema-s
 body.tema-sangue input[type="text"]:focus { box-shadow: 0 0 15px rgba(255,0,60,0.3); border-color: #FF003C !important; color: #FF003C !important;}
 body.tema-sangue .btn-cyber:hover { background: #FF003C; color: #0A0E17; }
 
+/* ==================== CONTROLE DE ÁUDIO ==================== */
+.btn-mute {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: rgba(10, 14, 23, 0.8);
+    border: 1px solid #4DD0E1;
+    color: #4DD0E1;
+    padding: 8px 12px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    z-index: 1000; /* Fica por cima de tudo */
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-mute.mutado {
+    border-color: #FF5252;
+    color: #FF5252;
+}
+
+.btn-mute:hover {
+    background: rgba(77, 208, 225, 0.2);
+}
+
 /* ==================== PROTOCOLO MOBILE (RESPONSIVIDADE) ==================== */
 /* Estas regras só são ativadas se a tela for menor que 600px (Celulares) */
 @media (max-width: 600px) {
