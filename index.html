@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+   
+    <div class="scanlines"></div>
+    <div class="vignette" id="vignette"></div>
+
 <!-- BOTÃO DE MÚSICA -->
     <button id="btn-mute" class="btn-mute">🔊 BGM: ON</button>
 
@@ -17,20 +21,8 @@
             <h1 class="titulo">LEXIS // PROTOCOL</h1>
             <div class="sub-titulo">VERSÃO WEB 1.0 // UPLINK ESTABELECIDO</div>
             
-            <div class="intro-box">
-                <span style="color:#4DD0E1;">> INICIANDO SEQUÊNCIA DE BOOT... [OK]</span><br>
-                <span style="color:#4DD0E1;">> LENDO ARQUIVO LOCAL 'palavras.json'... [OK]</span><br>
-                <span style="color:#4DD0E1;">> BYPASS DE FIREWALL EXTRATERRESTRE... [OK]</span><br><br>
-                <b>OPERADOR, ACORDE:</b><br>
-                A linguagem é a maior arma da humanidade. Sem palavras, não há ideias. Sem ideias, não há rebelião.<br><br>
-                No ano 2077, descobrimos a terrível verdade: o Mega Conglomerado <b>OmniCorp</b> é uma fachada administrada por uma elite de CEOs alienígenas. O objetivo deles? Patentear, burocratizar e apagar o nosso vocabulário, limitando nossa comunicação para transformar a humanidade em uma força de trabalho dócil e muda.<br><br>
-                Nós, da <i>Resistência LEXIS</i>, hackeamos uma falha na rede deles. Oferecemos a você o acesso backdoor: a chance de invadir o Mainframe, injetar as palavras proibidas e libertar o Vocabulário Global. Você é a nossa última esperança.<br><br>
-                <b style="color:#E0F7FA;">[ DIRETRIZES DA MISSÃO ]</b><br>
-                <b style="color:#4DD0E1;">1.</b> O sistema exibirá um <b>NÓ CRIPTOGRAFADO</b>.<br>
-                <b style="color:#4DD0E1;">2.</b> Injete <b>SINÔNIMOS</b> válidos para liberar a palavra e farmar XP.<br>
-                <b style="color:#4DD0E1;">3.</b> <i>Farm de XP:</i> O nó ficará aberto por todo o tempo. Digite o máximo que conseguir!<br>
-                <b style="color:#FF5252;">4.</b> Errou? Tente de novo! As dicas foram desativadas para não alertar os rastreadores da OmniCorp.<br>
-                <b style="color:#FF5252;">5.</b> Sobreviva até o <b>NÍVEL 10</b> para enfrentar a segurança máxima do Núcleo.<br>
+            <div class="intro-box" id="texto-lore">
+    <!-- O texto será injetado aqui pelo efeito de máquina de escrever -->
             </div>
             
             <div class="creditos-box">// ARQUITETO DE SISTEMA ROOT: GUSTAVOX99 //</div>
@@ -105,22 +97,21 @@
         </div>
 
         <!-- ==================== TELA 5: MERCADO NEGRO (LOJA) ==================== -->
-        <div id="tela-loja" class="tela oculto">
-            <h1 class="titulo" style="color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);">MERCADO NEGRO</h1>
+            <div id="tela-loja" class="tela oculto">
+                    <h1 class="titulo" style="color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);">MERCADO NEGRO</h1>
             <div class="sub-titulo">SKINS ILEGAIS E OVERRIDES DE TERMINAL</div>
             
             <div class="recorde-box" id="loja-saldo" style="font-size: 1.5rem; color: #FFD700;">
-                SALDO ATUAL: 0 XP
+             SALDO ATUAL: 0 XP
             </div>
 
+            <!-- O grid da loja -->
             <div class="loja-grid" id="loja-itens">
-                <!-- Os itens serão injetados aqui pelo JavaScript -->
-            </div>
+             </div>
             
-            <button class="btn-cyber" id="btn-voltar-loja">> VOLTAR AO MENU INICIAL</button>
-        </div>
-
-    </div>
+            <!-- BOTÃO DENTRO DA DIV DA TELA LOJA -->
+            <button class="btn-cyber" id="btn-voltar-loja" style="margin-top: 20px;">> VOLTAR AO MENU INICIAL</button>
+            </div> <!-- FIM DA TELA 5 -->
         
         <!-- ==================== MOTOR DE ÁUDIO ==================== -->
     <audio id="bgm-player" loop preload="auto"></audio> <!-- NOVO TOCA-FITAS -->
@@ -128,6 +119,7 @@
     <audio id="som-sucesso" src="audio/sucesso.mp3" preload="auto"></audio>
     <audio id="som-erro" src="audio/erro.mp3" preload="auto"></audio>
     <audio id="som-gameover" src="audio/gameover.mp3" preload="auto"></audio>
+    <audio id="som-teclado" src="audio/teclado.mp3" preload="auto"></audio>
     
     <script src="script.js"></script>
 </body>

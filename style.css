@@ -5,18 +5,82 @@
     padding: 0;
 }
 
-/* Fundo da tela e Grid Cyberpunk */
+/* ==================== CORE SYSTEM VARIABLES ==================== */
+/* O JavaScript vai manipular estas variáveis para mudar TUDO no jogo */
+:root {
+    --bg-color: #0a0e17;
+    --panel-bg: rgba(10, 14, 23, 0.85);
+    --text-main: #E0F7FA;
+    --text-accent: #4DD0E1;
+    --border-color: #4DD0E1;
+    --glow-color: rgba(77, 208, 225, 0.3);
+    --font-main: 'Orbitron', sans-serif;
+}
+
+/* ==================== ESTILOS BASE (CORRIGIDOS) ==================== */
 body {
-    background-color: #0A0E17;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-main);
     background-image: 
-        linear-gradient(rgba(77, 208, 225, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(77, 208, 225, 0.02) 1px, transparent 1px);
-    background-size: 40px 40px;
-    color: #E0F7FA;
-    font-family: 'JetBrains Mono', monospace;
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    margin: 0;
+    overflow-x: hidden;
+    
+    /* >>> O QUE FALTAVA: CENTRALIZANDO O JOGO NA TELA <<< */
     display: flex;
     justify-content: center;
-    padding: 40px 20px;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px; /* Largura máxima do painel */
+    margin: 0 auto;
+    text-align: center; /* Centraliza títulos e botões soltos */
+    padding: 20px;
+}
+
+/* ==================== BOTOES CYBERPUNK (O RETORNO) ==================== */
+.btn-cyber {
+    background: rgba(0, 0, 0, 0.6); /* Fundo escuro para não pegar o branco do navegador */
+    font-family: 'Orbitron', sans-serif !important; /* Força a fonte bonita sempre! */
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 12px 24px;
+    border: 2px solid var(--border-color);
+    color: var(--text-accent);
+    text-shadow: 0 0 5px var(--glow-color);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin: 10px auto;
+}
+
+.btn-cyber:hover {
+    background: var(--border-color) !important;
+    color: var(--bg-color) !important;
+    box-shadow: 0 0 20px var(--glow-color);
+}
+
+/* ==================== AJUSTE DOS ITENS DA LOJA ==================== */
+.loja-item {
+    display: flex;
+    justify-content: space-between; /* Empurra o texto pra esquerda e botão pra direita */
+    align-items: center;
+    padding: 15px 25px;
+    margin-bottom: 15px;
+    text-align: left;
+    
+    /* Mantém o visual Glassmorphism */
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6), inset 0 0 15px var(--glow-color);
+    backdrop-filter: blur(6px);
 }
 
 /* Limitador de largura para não esticar muito em telas grandes */
@@ -75,15 +139,6 @@ body {
 
 .xp { font-size: 1.2rem; color: #4DD0E1; }
 
-/* Caixa do Terminal (Palavra) */
-.terminal-box {
-    border: 1px solid rgba(77,208,225,0.4);
-    padding: 30px;
-    background-color: rgba(10, 14, 23, 0.9);
-    box-shadow: 0 0 15px rgba(77,208,225,0.05), inset 0 0 15px rgba(77,208,225,0.02);
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
 
 .dica-terminal {
     font-size: 0.8rem;
@@ -157,22 +212,6 @@ input[type="text"]:focus {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Botões Cyberpunk */
-.btn-cyber {
-    width: 100%;
-    background: #0A0E17;
-    color: #4DD0E1;
-    border: 1px solid #4DD0E1;
-    font-family: 'Orbitron', sans-serif;
-    padding: 15px;
-    transition: 0.2s;
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-}
 
 .btn-cyber:hover {
     background: #4DD0E1;
@@ -391,4 +430,72 @@ body.tema-sangue .btn-cyber:hover { background: #FF003C; color: #0A0E17; }
     .titulo[style*="4.5rem"] {
         font-size: 3rem !important; /* Ajusta o tamanho do GAME OVER */
     }
+}
+/* ==================== EFEITOS DE MONITOR ANTIGO ==================== */
+
+/* Linhas de Escaneamento (Scanlines) */
+.scanlines {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.1) 50%
+    );
+    background-size: 100% 4px; /* Tamanho das linhas */
+    z-index: 9999;
+    pointer-events: none; /* Permite clicar nos botões por trás */
+    opacity: 0.3;
+}
+
+/* Efeito de Flicker (Frequência da tela falhando levemente) */
+@keyframes flicker {
+    0% { opacity: 0.97; }
+    5% { opacity: 0.95; }
+    10% { opacity: 0.9; }
+    15% { opacity: 0.98; }
+    100% { opacity: 1; }
+}
+
+.container {
+    animation: flicker 0.15s infinite;
+}
+
+/* Cursor que pisca no estilo Terminal */
+.cursor-terminal {
+    display: inline-block;
+    width: 10px;
+    height: 1.2rem;
+    background: #4DD0E1;
+    margin-left: 5px;
+    animation: blink 0.8s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.intro-box {
+    min-height: 350px; /* Garante que a caixa não fique "crescendo" durante a digitação */
+    text-align: left;  /* Texto de terminal é sempre alinhado à esquerda */
+    line-height: 1.5;  /* Melhora a leitura do texto denso */
+    overflow-y: auto;  /* Se o texto for maior que o celular, permite rolar */
+}
+
+/* Efeito de Moldura Escura (Vignette) para temas imersivos */
+.vignette {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
+    pointer-events: none;
+    z-index: 9998;
+    display: none; /* Só aparece em temas específicos */
+}
+
+/* Animação de Batimento Cardíaco para o tema Sangue */
+@keyframes pulse-blood {
+    0% { box-shadow: inset 0 0 150px rgba(0,0,0,0.9); }
+    50% { box-shadow: inset 0 0 200px rgba(139, 0, 0, 0.5); }
+    100% { box-shadow: inset 0 0 150px rgba(0,0,0,0.9); }
 }

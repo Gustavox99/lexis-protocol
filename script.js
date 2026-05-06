@@ -15,8 +15,6 @@ const LORE_FRASES = [
 let bancoDados = {};
 let nivel = 1;
 let score = 0;
-// Substitua a linha antiga do tempoBase por esta:
-tempoBase = isBoss ? 30.0 : Math.max(15.0, 26.0 - nivel);
 let tempoRestante = 15.0;
 let timerInterval;
 let timerCooldownInterval;
@@ -25,12 +23,15 @@ let sinonimosAceitos = [];
 let respostasDadas = [];
 let isBoss = false;
 let isPlaying = false;
+// Substitua a linha antiga do tempoBase por esta:
+let tempoBase = 25.0; // Apenas o valor inicial
 // Memória Persistente (Local Storage)
 let highScore = parseInt(localStorage.getItem("lexisHighScore")) || 0;
 let highNivel = parseInt(localStorage.getItem("lexisHighNivel")) || 1;
 let saldoXP = parseInt(localStorage.getItem("lexisSaldoXP")) || 0;
 let temasDesbloqueados = JSON.parse(localStorage.getItem("lexisTemas")) || ["default"];
 let temaAtual = localStorage.getItem("lexisTemaAtual") || "default";
+let ultimaTrilha = ""; // Variável global para controle
 
 // 2. Conectando Telas e UI
 const telaIntro = document.getElementById("tela-intro");
@@ -55,8 +56,25 @@ const bgmPlayer = document.getElementById("bgm-player");
 const btnMute = document.getElementById("btn-mute");
 
 // >>> ATENÇÃO: Coloque aqui o nome exato dos seus 3 arquivos MP3 <<<
-const trilhas = ["Clockwork_Breach.mp3", "Second_Before_Impact.mp3", "Protocol_Breach.mp3"]; 
+const trilhas = ["audio/Clockwork_Breach.mp3", "audio/Second_Before_Impact.mp3", "audio/Protocol_Breach.mp3"]; 
 let isMuted = false;
+
+const textoMissao = `
+<span style="color:#4DD0E1;">> OPERADOR, ACORDE:... </span><br>
+
+<b>A linguagem é a maior arma da humanidade. Sem palavras, não há ideias. Sem ideias, não há rebelião.</b><br><br>
+
+No ano 2077, descobrimos a terrível verdade: a <b>OmniCorp</b> é uma fachada administrada por CEOs alienígenas. O objetivo deles? Apagar o nosso vocabulário para nos tornar escravos domesticados e mudos.<br><br>
+
+Nós, da <i>Resistência LEXIS</i>, hackeamos o Mainframe. Esta é a sua chance de injetar as palavras proibidas e libertar a humanidade.<br><br>
+
+<b style="color:#E0F7FA;">VOCÊ É A NOSSA ÚLTIMA ESPERANÇA.</b><br><br>
+
+<b style="color:#E0F7FA;">[ DIRETRIZES DA MISSÃO ]</b><br>
+<b style="color:#4DD0E1;">1.</b> O sistema exibirá um <b>NÓ CRIPTOGRAFADO</b>.<br>
+<b style="color:#4DD0E1;">2.</b> Injete <b>SINÔNIMOS</b> válidos para coletar XP.<br>
+<b style="color:#FF5252;">3.</b> Sobreviva até o <b>NÍVEL 10</b> para enfrentar o Núcleo.<br>
+`;
 
 // Função para atualizar a UI da Intro com o recorde salvo
 function atualizarRecordeUI() {
@@ -115,7 +133,9 @@ async function carregarBancoDeDados() {
 
 // 5. Botão de Iniciar (Na Intro)
 document.getElementById("btn-iniciar").addEventListener("click", () => {
-    iniciarBGM(); // Dá o play na música!
+    if (bgmPlayer.paused) {
+        iniciarBGM();
+    } // Dá o play na música!
     trocarTela(telaJogo);
     nivel = 1;
     score = 0;
@@ -124,11 +144,23 @@ document.getElementById("btn-iniciar").addEventListener("click", () => {
 });
 
 // 6. Preparando a rodada
+// 6. Preparando a rodada
 function iniciarNivel() {
-    isBoss = (nivel >= 10);
-    tempoBase = isBoss ? 20.0 : Math.max(6.0, 15.0 - (nivel * 0.8));
+    // 1º: Definimos se é Boss ANTES de calcular o tempo (Ordem Crítica!)
+    isBoss = (nivel >= 10); 
+    // Se acabou de virar Boss, troca a música para dar impacto!
+    if (isBoss) {
+        iniciarBGM(); 
+    }
+    
+    // 2º: Agora sim calculamos o tempo baseado no feedback do jogador (25s -> 15s)
+    tempoBase = isBoss ? 30.0 : Math.max(15.0, 26.0 - nivel);
+    
     tempoRestante = tempoBase;
     respostasDadas = [];
+
+    // Tenta iniciar a música se ela ainda não disparou
+    iniciarBGM();
     
     if (isBoss) {
         displayNivel.innerText = "⚠ MAINFRAME OMNICORP ALCANÇADO ⚠";
@@ -137,6 +169,10 @@ function iniciarNivel() {
         inputComando.placeholder = "Insira 3 chaves (separadas por vírgula)...";
     } else {
         displayNivel.innerText = `NÍVEL DE ACESSO: 0${nivel}`;
+        // Limpa classes de boss se o jogador reiniciou
+        displayNivel.classList.remove("hud-boss");
+        palavraAtual.classList.remove("palavra-boss");
+        inputComando.placeholder = "Injete os sinônimos e farme XP...";
     }
 
     inputComando.value = "";
@@ -384,11 +420,11 @@ function addJuiceFlashInput(isTurbo) {
 const telaLojaObj = document.getElementById("tela-loja");
 const lojaItens = document.getElementById("loja-itens");
 
-// Catálogo de Skins
+// >>> FALTAVA ISSO: O catálogo de onde o JS lê os nomes e preços <<<
 const catalogoTemas = [
-    { id: "default", nome: "CYAN CLÁSSICO", custo: 0, cor: "#4DD0E1" },
-    { id: "matrix", nome: "MATRIZ VERDE", custo: 10000, cor: "#00FF41" },
-    { id: "sangue", nome: "SANGUE DE IA", custo: 25000, cor: "#FF003C" }
+    { id: "vampiro", nome: "SANGUE DE IA (PULSE)", custo: 500, cor: "#FF5252" },
+    { id: "alien", nome: "OMNICORP ALIEN (ACID)", custo: 1000, cor: "#9eff2e" },
+    { id: "blade", nome: "NEON DYSTOPIA (RETRO)", custo: 2000, cor: "#ff00ff" }
 ];
 
 document.getElementById("btn-loja").addEventListener("click", () => {
@@ -401,38 +437,91 @@ document.getElementById("btn-voltar-loja").addEventListener("click", () => {
     atualizarRecordeUI();
 });
 
-function aplicarTema(nomeTema) {
-    document.body.className = ""; // Limpa temas antigos
-    if (nomeTema !== "default") {
-        document.body.classList.add(`tema-${nomeTema}`);
+function aplicarTema(tema) {
+    const root = document.documentElement;
+    const vignette = document.getElementById("vignette");
+    
+    // 1. O GRANDE RESET
+    if(vignette) {
+        vignette.style.display = "none";
+        vignette.style.animation = "none";
     }
-    localStorage.setItem("lexisTemaAtual", nomeTema);
-    temaAtual = nomeTema;
+    document.body.style.textShadow = "none";
+
+    // 2. APLICANDO AS PALETAS PROFUNDAS
+    if (tema === 'default') {
+        // CYAN CLÁSSICO
+        root.style.setProperty('--bg-color', '#0a0e17');
+        root.style.setProperty('--panel-bg', 'rgba(10, 14, 23, 0.85)');
+        root.style.setProperty('--text-main', '#E0F7FA');
+        root.style.setProperty('--text-accent', '#4DD0E1');
+        root.style.setProperty('--border-color', '#4DD0E1');
+        root.style.setProperty('--glow-color', 'rgba(77, 208, 225, 0.3)');
+        root.style.setProperty('--font-main', "'Orbitron', sans-serif");
+    } 
+    else if (tema === 'vampiro') {
+        // SANGUE DE IA (Tudo escuro, vermelho profundo)
+        root.style.setProperty('--bg-color', '#050000');
+        root.style.setProperty('--panel-bg', 'rgba(20, 0, 0, 0.9)');
+        root.style.setProperty('--text-main', '#ffcccc');
+        root.style.setProperty('--text-accent', '#FF5252');
+        root.style.setProperty('--border-color', '#8B0000'); // Borda mais escura que o texto!
+        root.style.setProperty('--glow-color', 'rgba(255, 82, 82, 0.4)');
+        root.style.setProperty('--font-main', "'Orbitron', sans-serif");
+        if(vignette) {
+            vignette.style.display = "block";
+            vignette.style.animation = "pulse-blood 2s infinite";
+        }
+    }
+    else if (tema === 'alien') {
+        // OMNICORP ALIEN (Tóxico, verde escuro, fonte de máquina)
+        root.style.setProperty('--bg-color', '#020d02');
+        root.style.setProperty('--panel-bg', 'rgba(5, 20, 5, 0.9)');
+        root.style.setProperty('--text-main', '#ccffcc');
+        root.style.setProperty('--text-accent', '#9eff2e');
+        root.style.setProperty('--border-color', '#32cd32');
+        root.style.setProperty('--glow-color', 'rgba(158, 255, 46, 0.3)');
+        root.style.setProperty('--font-main', "'Courier New', monospace");
+    }
+    else if (tema === 'blade') {
+        // NEON DYSTOPIA (Fundo Roxo escuro, botões Ciano, Texto Rosa)
+        root.style.setProperty('--bg-color', '#0b0014');
+        root.style.setProperty('--panel-bg', 'rgba(20, 0, 30, 0.85)');
+        root.style.setProperty('--text-main', '#e0cce0');
+        root.style.setProperty('--text-accent', '#ff00ff'); // Neon Rosa
+        root.style.setProperty('--border-color', '#00ffff'); // Bordas Ciano
+        root.style.setProperty('--glow-color', 'rgba(255, 0, 255, 0.4)');
+        root.style.setProperty('--font-main', "'Orbitron', sans-serif");
+        // A Oclusão Cromática
+        document.body.style.textShadow = "2px 0 #00ffff, -2px 0 #ff00ff";
+    }
+
+    localStorage.setItem("lexisTemaAtual", tema);
 }
 
 function processarCompra(idTema, custo) {
     if (temasDesbloqueados.includes(idTema)) {
-        aplicarTema(idTema); // Já tem? Só equipa!
-        if(somSucesso) somSucesso.play();
+        aplicarTema(idTema); 
+        if(somSucesso) somSucesso.play().catch(()=>{});
         abrirLoja();
     } else if (saldoXP >= custo) {
-        saldoXP -= custo; // Desconta o saldo
+        saldoXP -= custo; 
         localStorage.setItem("lexisSaldoXP", saldoXP);
-        temasDesbloqueados.push(idTema); // Guarda na carteira
+        temasDesbloqueados.push(idTema); 
         localStorage.setItem("lexisTemas", JSON.stringify(temasDesbloqueados));
         
-        aplicarTema(idTema); // Equipa o novo
-        if(somSucesso) somSucesso.play();
+        aplicarTema(idTema); 
+        if(somSucesso) somSucesso.play().catch(()=>{});
         abrirLoja();
     } else {
-        if(somErro) somErro.play();
+        if(somErro) somErro.play().catch(()=>{});
         alert("ACESSO NEGADO: SALDO DE XP INSUFICIENTE!");
     }
 }
 
 function abrirLoja() {
     document.getElementById("loja-saldo").innerHTML = `SALDO ATUAL: <b style="color:#FFD700;">${saldoXP} XP</b>`;
-    lojaItens.innerHTML = "";
+    lojaItens.innerHTML = ""; // Agora apaga só a lista, sem apagar o título!
     
     catalogoTemas.forEach(tema => {
         const jaPossui = temasDesbloqueados.includes(tema.id);
@@ -445,11 +534,11 @@ function abrirLoja() {
         else if (jaPossui) { textoBotao = "EQUIPAR"; }
 
         const div = document.createElement("div");
-        div.className = "loja-item";
+        div.className = "loja-item"; // Estilo que usaremos no CSS
         div.innerHTML = `
             <div>
-                <h3 style="color:${tema.cor}">${tema.nome}</h3>
-                <p>${jaPossui ? "Acesso Liberado" : "Custo: " + tema.custo + " XP"}</p>
+                <h3 style="color:${tema.cor}; margin-bottom:5px;">${tema.nome}</h3>
+                <p style="font-size:0.9rem;">${jaPossui ? "Acesso Liberado" : "Custo: " + tema.custo + " XP"}</p>
             </div>
             <button class="btn-cyber" style="border-color:${corBotao}; color:${corBotao};" 
                 onclick="processarCompra('${tema.id}', ${tema.custo})">${textoBotao}</button>
@@ -471,16 +560,82 @@ btnMute.addEventListener("click", () => {
     btnMute.classList.toggle("mutado", isMuted);
 });
 
-// Função para iniciar a música (chamada apenas quando o jogador interage)
+// Função para tocar uma música aleatória (evitando repetir a mesma se possível)
 function iniciarBGM() {
-    // Só toca se ainda não estiver tocando nenhuma música
-    if (!bgmPlayer.getAttribute("src")) {
-        const trilhaSorteada = trilhas[Math.floor(Math.random() * trilhas.length)];
-        bgmPlayer.src = trilhaSorteada;
-        bgmPlayer.volume = 0.3; // Volume da música um pouco mais baixo que os efeitos
-        bgmPlayer.play().catch(e => console.warn("Autoplay da BGM bloqueado pelo navegador.", e));
+    // 1. Filtra as trilhas para remover a que acabou de tocar
+    const opcoesDisponiveis = trilhas.filter(t => t !== ultimaTrilha);
+    
+    // 2. Sorteia apenas entre as que sobraram
+    const novaTrilha = opcoesDisponiveis[Math.floor(Math.random() * opcoesDisponiveis.length)];
+    
+    // 3. Atualiza o player e a memória do sistema
+    ultimaTrilha = novaTrilha;
+    bgmPlayer.src = novaTrilha;
+    bgmPlayer.volume = 0.3;
+    
+    // 4. Força o carregamento e o play
+    bgmPlayer.load(); 
+    bgmPlayer.play().catch(e => console.warn("Erro ao trocar música:", e));
+}
+
+// Garante que quando a música acabar, o sistema chame a nova lógica
+bgmPlayer.onended = function() {
+    iniciarBGM();
+};
+
+const somTeclado = document.getElementById("som-teclado");
+
+function efeitoDigitacao(elemento, texto, index = 0) {
+    if (index < texto.length) {
+        if (texto.charAt(index) === "<") {
+            let finalTag = texto.indexOf(">", index);
+            index = finalTag + 1;
+        } else {
+            // Toca o som de tecla se não for espaço e o áudio estiver liberado
+            if (texto.charAt(index) !== " " && !isMuted) {
+                somTeclado.currentTime = 0;
+                somTeclado.volume = 0.2;
+                somTeclado.play().catch(() => {}); // Ignora erro se o browser bloquear
+            }
+            index++;
+        }
+
+        elemento.innerHTML = texto.slice(0, index) + '<span class="cursor-terminal"></span>';
+        
+        let delay = 20; 
+        const charAnterior = texto.charAt(index - 1);
+        if (charAnterior === "." || charAnterior === ":") delay = 400;
+
+        setTimeout(() => {
+            efeitoDigitacao(elemento, texto, index);
+        }, delay);
     }
 }
+
+// Dispara o efeito assim que a página carrega
+// Altere o seu window.onload para isso:
+window.onload = () => {
+    // Criamos um "Overlay" de segurança para liberar o áudio
+    const overlay = document.createElement("div");
+    overlay.id = "audio-unlock";
+    overlay.innerHTML = `<div class="btn-cyber" style="cursor:pointer;">> ESTABELECER CONEXÃO [CLIQUE PARA ENTRAR]</div>`;
+    overlay.style = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,14,23,0.95); z-index:10000; display:flex; align-items:center; justify-content:center;";
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener("click", () => {
+        overlay.remove(); // Remove o aviso
+        iniciarBGM();     // Liga a música!
+        
+        const boxLore = document.getElementById("texto-lore");
+        if (boxLore) {
+            boxLore.innerHTML = ""; // Limpa antes de começar
+            efeitoDigitacao(boxLore, textoMissao);
+        }
+    });
+
+    atualizarRecordeUI();
+    aplicarTema(temaAtual);
+};
 
 // ==========================================
 // BOOT DO SISTEMA
