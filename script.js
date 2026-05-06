@@ -64,7 +64,7 @@ const textoMissao = `
 
 <b>A linguagem é a maior arma da humanidade. Sem palavras, não há ideias. Sem ideias, não há rebelião.</b><br><br>
 
-No ano 2077, descobrimos a terrível verdade: a <b>OmniCorp</b> é uma fachada administrada por CEOs alienígenas. O objetivo deles? Apagar o nosso vocabulário para nos tornar escravos domesticados e mudos.<br><br>
+No ano 2077, descobrimos a terrível verdade: a <b>OmniCorp</b> é uma fachada administrada por CEOs alienígenas. O objetivo deles? Burocratizar o nosso vocabulário para nos tornar escravos domesticados e mudos.<br><br>
 
 Nós, da <i>Resistência LEXIS</i>, hackeamos o Mainframe. Esta é a sua chance de injetar as palavras proibidas e libertar a humanidade.<br><br>
 
